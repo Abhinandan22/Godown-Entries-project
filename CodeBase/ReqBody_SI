@@ -1,0 +1,38 @@
+var ReqBody_SI = Class.create();
+ReqBody_SI.prototype = {
+    initialize: function() {
+    },
+	
+	buildBody : function(current){
+		
+		//Build Payload to Send
+		
+		var godentry = {
+			
+			"number" : current.u_number.toString(),
+			"type" : current.u_type.getChoiceValue(),
+			"tgate" : current.u_time_it_reached_gate.toString(),
+			"troom" : current.u_time_it_reached_room.toString()
+		};	
+		
+		
+		this.logRequest(godentry);
+		
+		return JSON.stringify(godentry);
+		
+	},
+	
+	
+	logRequest : function(logsout){
+		
+		var logs = new GlideRecord("u_outbound_logs");
+        logs.initialize();
+		logs.setValue('u_request_body',JSON.stringify(logsout));
+		logs.setValue('sys_created_by',gs.getUserID());
+		logs.setValue('sys_created_on',new GlideDateTime());
+		logs.insert();
+	},
+	
+
+    type: 'ReqBody_SI'
+};
