@@ -1,0 +1,4 @@
+(function callOut(){
+
+	return new OutboundRecord_SI().sendRecord(current);	
+})();
