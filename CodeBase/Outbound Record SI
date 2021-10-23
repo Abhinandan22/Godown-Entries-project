@@ -1,0 +1,31 @@
+var OutboundRecord_SI = Class.create();
+OutboundRecord_SI.prototype = {
+    initialize: function() {
+		
+		this.body = new ReqBody_SI();
+		this.gdnProp = gs.getProperty('trigger.godown.record');
+		
+    },
+	
+	
+	sendRecord: function(current) {
+    var body = this.body.buildBody(current);
+	var response = this.sendRecords(body);
+	this.sendResponse(response);
+	gs.log("Response " + response);
+	return body;
+    
+},
+	
+	sendRecords : function(body){
+		
+		var req = new sn_ws.RESTMessageV2('Outbound to Target','Godown Create');
+		req.setEndpoint(this.gdnProp);
+		req.setHttpMethod('POST');
+		req.setRequestBody(body);
+		var resp = req.execute();
+		return resp;
+	},
+
+    type: 'OutboundRecord_SI'
+};
